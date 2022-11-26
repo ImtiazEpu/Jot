@@ -50,10 +50,7 @@
                     <div>
                         Contact
                     </div>
-                    <div
-                        class="rounded-full border border-gray-400 text-white bg-blue-400 w-10 h-10 flex items-center justify-center">
-                        VG
-                    </div>
+                   <UserCircle :name="user.name"/>
 
                 </div>
                 <div class="flex flex-col flex-1 overflow-y-hidden">
@@ -65,24 +62,33 @@
 </template>
 
 <script>
-    export default {
-        name: "App",
+import UserCircle from "./UserCircle";
 
-        props: [
-            'user'
-        ],
-        mounted() {
-            window.axios.interceptors.request.use(
-                (config) => {
+export default {
+    name: "App",
+
+    props: [
+        'user'
+    ],
+    components:{
+        UserCircle
+    },
+    created() {
+        window.axios.interceptors.request.use(
+            (config) => {
+                if (config.method === 'get') {
+                    config.url = config.url + "?api_token=" + this.user.api_token;
+                } else {
                     config.data = {
                         ...config.data,
                         api_token: this.user.api_token
                     };
-                    return config;
                 }
-            )
-        }
+                return config;
+            }
+        )
     }
+}
 </script>
 
 <style scoped>
