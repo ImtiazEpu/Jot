@@ -12,7 +12,7 @@
                         Edit
                     </router-link>
                     <a class="px-4 py-2 text-sm text-red-500 rounded border border-red-500 font-bold"
-                       href="#">Delete</a>
+                       href="#" @click="showAlert">Delete</a>
                 </div>
             </div>
             <div class="flex items-center pt-6">
@@ -33,6 +33,8 @@
 
 <script>
 import UserCircle from "../components/UserCircle";
+import Swal from "sweetalert2";
+
 
 export default {
     name: "ContactsShow",
@@ -44,6 +46,9 @@ export default {
             })
             .catch(errors => {
                 this.loading = false;
+                if (errors.response.status === 404){
+                    this.$router.push('/contacts');
+                }
             })
     },
     data: function () {
@@ -54,6 +59,43 @@ export default {
     },
     components: {
         UserCircle
+    },
+    methods: {
+        showAlert: function () {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete('/api/contacts/' + this.$route.params.id)
+                        .then(response => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'Contact has been deleted.',
+                                showConfirmButton: true,
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                            }).then(() => {
+                                this.$router.push('/contacts');
+                            });
+                        })
+                        .catch(error => {
+                            Swal.fire(
+                                'Opps!',
+                                'Internal Error. Unable to delete.',
+                                'error'
+                            )
+                        })
+
+                }
+            })
+        }
     }
 }
 </script>
