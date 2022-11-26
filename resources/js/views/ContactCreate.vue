@@ -1,13 +1,16 @@
 <template>
     <div>
         <form @submit.prevent="submitForm">
-            <InputField name="name" label="Contact Name" placeholder="Full Name" @update:field="form.name=$event"/>
-            <InputField name="email" label="Contact Email" placeholder="your@domain.com"
+            <InputField name="name" label="Contact Name" :errors="errors" placeholder="Full Name"
+                        @update:field="form.name=$event"/>
+            <InputField name="email" label="Contact Email" :errors="errors" placeholder="your@domain.com"
                         @update:field="form.email=$event"/>
-            <InputField name="phone" label="Contact Phone" placeholder="+880-xxx-xxx-xxxx"
+            <InputField name="phone" label="Contact Phone" :errors="errors" placeholder="+880-xxx-xxx-xxxx"
                         @update:field="form.phone=$event"/>
-            <InputField name="birthday" label="Birthday" placeholder="MM/DD/YYYY" @update:field="form.birthday=$event"/>
-            <InputField name="company" label="Company" placeholder="Company" @update:field="form.company=$event"/>
+            <InputField name="birthday" label="Birthday" :errors="errors" placeholder="MM/DD/YYYY"
+                        @update:field="form.birthday=$event"/>
+            <InputField name="company" label="Company" :errors="errors" placeholder="Company"
+                        @update:field="form.company=$event"/>
 
             <div class="flex justify-end">
                 <button class="border px-4 py-2 text-red-700 rounded mr-5 shadow hover:border-red-700">Cancel</button>
@@ -36,7 +39,8 @@
                     'phone': '',
                     'birthday': '',
                     'company': '',
-                }
+                },
+                errors: null,
             }
         },
 
@@ -47,6 +51,7 @@
 
                     })
                     .catch(errors => {
+                        this.errors = errors.response.data.errors
 
                     });
             }
