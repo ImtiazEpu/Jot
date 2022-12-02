@@ -19,7 +19,7 @@
                         <p class="tracking-wide pl-3">Add New</p>
                     </router-link>
                     <p class="pt-12 uppercase font-bold text-gray-500 text-xs">General</p>
-                    <router-link to="/" class="flex item-center py-2 hover:text-blue-600 text-sm">
+                    <router-link to="/contacts" class="flex item-center py-2 hover:text-blue-600 text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                              class="fill-current text-blue-600 w-5 h-5">
                             <path class="st0"
