@@ -23,9 +23,10 @@
 
 <script>
     import InputField from "../components/InputField";
+    import Swal from "sweetalert2";
 
     export default {
-        name: "ContactCreate",
+        name: "ContactsCreate",
 
         components: {
             InputField
@@ -48,8 +49,16 @@
             submitForm: function () {
                 axios.post('/api/contacts', this.form)
                     .then(response => {
-                        this.$router.push(response.data.links.self);
-
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Created!',
+                            text: 'Contact has been created successfully.',
+                            showConfirmButton: true,
+                            allowEscapeKey: false,
+                            allowOutsideClick: false,
+                        }).then(() => {
+                            this.$router.push(response.data.links.self);
+                        });
                     })
                     .catch(errors => {
                         this.errors = errors.response.data.errors

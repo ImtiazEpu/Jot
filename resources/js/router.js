@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import ContactCreate from "./views/ContactCreate";
+import ContactsCreate from "./views/ContactsCreate";
 import ListComponent from "./components/ListComponent";
 import ContactsShow from "./views/ContactsShow";
+import ContactsEdit from "./views/ContactsEdit";
 
 
 Vue.use(VueRouter);
@@ -10,8 +11,9 @@ Vue.use(VueRouter);
 export default new VueRouter({
     routes: [
         {path: '/', component: ListComponent},
-        {path: '/contacts/create', component: ContactCreate},
-        {path: '/contacts/:id', component: ContactsShow}
+        {path: '/contacts/create', component: ContactsCreate},
+        {path: '/contacts/:id', component: ContactsShow},
+        {path: '/contacts/:id/edit', component: ContactsEdit}
     ],
     mode: 'history'
 });
