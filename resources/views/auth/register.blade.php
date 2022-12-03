@@ -37,7 +37,7 @@
                                     <label
                                         class="block uppercase text-gray-700 text-xs font-bold mb-2"
                                         for="name"
-                                    >{{ __('Email')}}</label
+                                    >{{ __('Name')}}</label
                                     ><input
                                         id="name"
                                         type="text"
