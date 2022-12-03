@@ -5,15 +5,16 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 
 class Contact extends Model
 {
+    use Searchable;
     protected $guarded = [];
 
     protected $dates = ['birthday'];
 
-    public function path()
-    {
+    public function path(): string {
         return '/contacts/' . $this->id;
     }
 
