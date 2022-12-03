@@ -50,7 +50,11 @@
                     <div>
                         Contact
                     </div>
-                   <UserCircle :name="user.name"/>
+                    <div class="flex items-center">
+                        <SearchBar/>
+                        <UserCircle :name="user.name"/>
+                    </div>
+
 
                 </div>
                 <div class="flex flex-col flex-1 overflow-y-hidden">
@@ -63,6 +67,7 @@
 
 <script>
 import UserCircle from "./UserCircle";
+import SearchBar from "./SearchBar";
 
 export default {
     name: "App",
@@ -71,7 +76,8 @@ export default {
         'user'
     ],
     components:{
-        UserCircle
+        UserCircle,
+        SearchBar,
     },
     created() {
         window.axios.interceptors.request.use(
