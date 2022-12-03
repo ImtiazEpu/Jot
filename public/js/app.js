@@ -2230,16 +2230,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _UserCircle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserCircle */ "./resources/js/components/UserCircle.vue");
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "SearchBar",
+  components: {
+    UserCircle: _UserCircle__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   data: function data() {
     return {
-      searchTerm: ''
+      searchTerm: '',
+      focus: false,
+      results: []
     };
   },
   methods: {
     search: lodash__WEBPACK_IMPORTED_MODULE_0___default().debounce(function (e) {
+      var _this = this;
+
       if (this.searchTerm.length < 3) {
         return;
       }
@@ -2247,8 +2256,10 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/search', {
         searchTerm: this.searchTerm
       }).then(function (response) {
-        console.log(response.data);
-      })["catch"](function (errors) {});
+        _this.results = response.data.data;
+      })["catch"](function (errors) {
+        console.log(errors.response);
+      });
     }, 300)
   }
 });
@@ -3116,7 +3127,16 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_c("div", {
+  return _c("div", [_vm.focus ? _c("div", {
+    staticClass: "absolute bg-black opacity-0 right-0 left-0 top-0 bottom-0 z-10",
+    on: {
+      click: function click($event) {
+        _vm.focus = false;
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "relative z-10"
+  }, [_c("div", {
     staticClass: "absolute"
   }, [_c("svg", {
     staticClass: "w-5 h-5 mt-2 ml-2",
@@ -3149,9 +3169,37 @@ var render = function render() {
       input: [function ($event) {
         if ($event.target.composing) return;
         _vm.searchTerm = $event.target.value;
-      }, _vm.search]
+      }, _vm.search],
+      focus: function focus($event) {
+        _vm.focus = true;
+      }
     }
-  })]);
+  }), _vm._v(" "), _vm.focus ? _c("div", {
+    staticClass: "absolute bg-blue-900 text-white rounded-lg p-4 w-96 right-0 mr-6 mt-2 shadow z-20"
+  }, [_vm.results == 0 ? _c("div", [_vm._v("No result found for '" + _vm._s(_vm.searchTerm) + "'")]) : _vm._e(), _vm._v(" "), _vm._l(_vm.results, function (result) {
+    return _c("div", {
+      on: {
+        click: function click($event) {
+          _vm.focus = false;
+        }
+      }
+    }, [_c("router-link", {
+      staticClass: "block py-2",
+      attrs: {
+        to: result.links.self
+      }
+    }, [_c("div", {
+      staticClass: "flex items-center"
+    }, [_c("UserCircle", {
+      attrs: {
+        name: result.data.name
+      }
+    }), _vm._v(" "), _c("div", {
+      staticClass: "pl-3"
+    }, [_c("p", [_vm._v(_vm._s(result.data.name))]), _vm._v(" "), _c("p", {
+      staticClass: "text-sm"
+    }, [_vm._v(_vm._s(result.data.company))])])], 1)])], 1);
+  })], 2) : _vm._e()])]);
 };
 
 var staticRenderFns = [];

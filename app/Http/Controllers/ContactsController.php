@@ -9,22 +9,20 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ContactsController extends Controller
-{
+class ContactsController extends Controller {
     /**
      * Data validation
      *
      * @return mixed
      */
-    private function validateData()
-    {
-        return request()->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
+    private function validateData() {
+        return request()->validate( [
+            'name'     => 'required',
+            'email'    => 'required|email',
+            'phone'    => 'required',
             'birthday' => 'required',
-            'company' => 'required',
-        ]);
+            'company'  => 'required',
+        ] );
     }
 
     /**
@@ -32,57 +30,57 @@ class ContactsController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function index()
-    {
-        $this->authorize('viewAny', Contact::class);
-        return ContactResource::collection(request()->user()->contacts);
+    public function index() {
+        $this->authorize( 'viewAny', Contact::class );
+
+        return ContactResource::collection( request()->user()->contacts );
     }
 
     /**
      * Data Store
      * @throws AuthorizationException
      */
-    public function store()
-    {
-        $this->authorize('create', Contact::class);
+    public function store() {
+        $this->authorize( 'create', Contact::class );
 
         $contact = request()->user()
-            ->contacts()
-            ->create($this->validateData());
+                            ->contacts()
+                            ->create( $this->validateData() );
 
-        return (new ContactResource($contact))
+        return ( new ContactResource( $contact ) )
             ->response()
-            ->setStatusCode(Response::HTTP_CREATED);
+            ->setStatusCode( Response::HTTP_CREATED );
     }
 
     /**
      * Data Showing
      *
      * @param Contact $contact
+     *
      * @return ContactResource
      * @throws AuthorizationException
      */
-    public function show(Contact $contact)
-    {
-        $this->authorize('view', $contact);
-        return new ContactResource($contact);
+    public function show( Contact $contact ) {
+        $this->authorize( 'view', $contact );
+
+        return new ContactResource( $contact );
     }
 
     /**
      * Data Updating
      *
      * @param Contact $contact
+     *
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function update(Contact $contact)
-    {
-        $this->authorize('update', $contact);
-        $contact->update($this->validateData());
+    public function update( Contact $contact ) {
+        $this->authorize( 'update', $contact );
+        $contact->update( $this->validateData() );
 
-        return (new ContactResource($contact))
+        return ( new ContactResource( $contact ) )
             ->response()
-            ->setStatusCode(Response::HTTP_OK);
+            ->setStatusCode( Response::HTTP_OK );
     }
 
     /**
@@ -92,11 +90,10 @@ class ContactsController extends Controller
      * @throws AuthorizationException
      * @throws \Exception
      */
-    public function destroy(Contact $contact)
-    {
-        $this->authorize('delete', $contact);
+    public function destroy( Contact $contact ) {
+        $this->authorize( 'delete', $contact );
         $contact->delete();
 
-        return response([], Response::HTTP_NO_CONTENT);
+        return response( [], Response::HTTP_NO_CONTENT );
     }
 }

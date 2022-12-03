@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-class AppController extends Controller
-{
+use Illuminate\Contracts\Support\Renderable;
+
+class AppController extends Controller {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
+    public function __construct() {
+        $this->middleware( 'auth' );
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
-    public function index()
-    {
-        return view('home');
+    public function index() {
+        return view( 'home' );
     }
 }

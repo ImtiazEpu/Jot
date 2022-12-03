@@ -12,6 +12,7 @@ class BirthdaysController extends Controller {
      */
     public function index() {
         $contact = request()->user()->contacts()->birthdays()->get();
-        return Contact::collection($contact);
+
+        return Contact::collection( $contact );
     }
 }
